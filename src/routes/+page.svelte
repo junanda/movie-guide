@@ -1,6 +1,11 @@
 <script>
 	import Info from "../lib/components/Info.svelte";
+    import { enhance } from '$app/forms'
     import './style.css'
+
+    export let data;
+
+    console.log(data)
 
 </script>
 <svelte:head>
@@ -8,15 +13,17 @@
 </svelte:head>
 
 <div class="container">
-    <div class="search-container">
-        <form action="">
-            <input type="text" name="movie-name" id="movie-name" placeholder="Enter moview name here....">
-            <button id="search-btn">Search</button>
-        </form>
-    </div>
+    <form method="post" class="search-container" use:enhance>
+        <input type="text" name="movie-name" id="movie-name" placeholder="Enter moview name here...." required>
+        <button id="search-btn">Search</button>
+    </form>
 
     <div id="result">
-        <Info />
+        {#if !data}
+            <h3 class="msg">Please Enter a movie name</h3>
+        {:else}
+            <Info movie={data}/>
+        {/if}
     </div>
 </div>
 
@@ -62,5 +69,9 @@
         background-color: #ffb92a;
         border: none;
         cursor: pointer;
+    }
+
+    #result {
+        color: #fff;
     }
 </style>
