@@ -1,11 +1,26 @@
 <script>
 	import Info from "../lib/components/Info.svelte";
+    import { invalidateAll } from '$app/navigation'
     import { enhance } from '$app/forms'
     import './style.css'
 
-    export let data;
+    let data;
+    let search = false;
 
-    console.log(data)
+    async function searchMovie(event) {
+        const formEl = event.target
+        const dataF = new FormData(formEl)
+
+        const response = await fetch(formEl.action, {
+            method: 'POST',
+            body: dataF
+        })
+
+        data = await response.json()
+        search = true;
+        formEl.reset()
+        await invalidateAll()
+    }
 
 </script>
 <svelte:head>
@@ -13,13 +28,13 @@
 </svelte:head>
 
 <div class="container">
-    <form method="post" class="search-container" use:enhance>
+    <form method="post" class="search-container" on:submit|preventDefault={searchMovie}>
         <input type="text" name="movie-name" id="movie-name" placeholder="Enter moview name here...." required>
         <button id="search-btn">Search</button>
     </form>
 
     <div id="result">
-        {#if !data}
+        {#if !search }
             <h3 class="msg">Please Enter a movie name</h3>
         {:else}
             <Info movie={data}/>
