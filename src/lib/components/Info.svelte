@@ -1,36 +1,33 @@
 <script>
     import ratingStart from '$lib/images/star-icon.svg';
+	import { fade } from 'svelte/transition';
 
     export let movie;
 
-    console.log(movie);
-
 </script>
 
-<div class="info">
-    <img src="" alt="" class="poster"/>
+<div class="info" in:fade>
+    <img src={movie.Poster} alt="" class="poster"/>
     <div>
-        <h2>Title</h2>
+        <h2>{movie.Title}</h2>
         <div class="rating">
             <img src={ratingStart} alt="star" />
-            <h4>rating</h4>
+            <h4>{movie.imdbRating}</h4>
         </div>
         <div class="details">
-            <span>Rated</span>
-            <span>Year</span>
-            <span>Runtime</span>
+            <span>{movie.Rated}</span>
+            <span>{movie.Year}</span>
+            <span>{movie.Runtime}</span>
         </div>
         <div class="genre">
-            <div></div>
-            <div></div>
-            <div></div>
+            <div>{@html movie.Genre.split(",").join("</div><div>")}</div>
         </div>
     </div>
 </div>
-<h3>Plot:</h3>
-<p>detail plot</p>
-<h3>Cast</h3>
-<p>Actors</p>
+<h3 in:fade>Plot:</h3>
+<p in:fade>{movie.Plot}</p>
+<h3 in:fade>Cast:</h3>
+<p in:fade>{movie.Actors}</p>
 
 <style>
     .info {
